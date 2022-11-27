@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     Button bt,bt1,bt2;
     FusedLocationProviderClient mFusedLocationClient;
     //Comment line.
+    //Comment line 2.
     int PERMISSION_ID = 44;
     float p1,p2,p3,p4;
     private static final long INTERVAL = 1000 * 2;
