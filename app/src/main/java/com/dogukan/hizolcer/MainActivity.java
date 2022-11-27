@@ -1,4 +1,5 @@
 package com.dogukan.hizolcer;
+//gps
 
 import android.Manifest;
 import android.annotation.SuppressLint;
