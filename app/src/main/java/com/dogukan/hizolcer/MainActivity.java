@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     Button bt,bt1,bt2;
     FusedLocationProviderClient mFusedLocationClient;
     //Comment line.
+    //Comment line 2.
     //Second comment line
     int PERMISSION_ID = 44;
     float p1,p2,p3,p4;
