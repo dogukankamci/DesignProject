@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                Toast.makeText(this, "GPS Ayarını Açın! Eğer sorun yine düzelmezde uygulama ayarlarından GPS iznini aktif edin!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "GPS Ayarını Açın! Eğer sorun yine düzelmezse uygulama ayarlarından GPS iznini aktif edin!", Toast.LENGTH_LONG).show();
 
             }
         } else {
