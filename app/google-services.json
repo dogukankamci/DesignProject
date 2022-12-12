@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "167949303488",
+    "project_id": "designproject-adec5",
+    "storage_bucket": "designproject-adec5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167949303488:android:7e2b80bd9916309e677725",
+        "android_client_info": {
+          "package_name": "com.dogukan.hizolcer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167949303488-mkbmrrppdkc74pmqgm50gitfr0b20h4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8P-0tNFe-hUlw6_mxjAwbRpZKNz-m4Qc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167949303488-mkbmrrppdkc74pmqgm50gitfr0b20h4a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
