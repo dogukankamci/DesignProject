@@ -1,26 +1,18 @@
 package com.dogukan.hizolcer;
-//gps
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.GpsStatus;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.TextView;
 import android.widget.Toast;
-//Usttteki toast message icin gereklidir...
-
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,12 +37,12 @@ import java.util.Map;
 public class  MainActivity extends AppCompatActivity {
     FirebaseFirestore firestore;
     TextView tw;
-    Button bt,bt1,bt2;
+    Button bt;
     FusedLocationProviderClient mFusedLocationClient;
     int PERMISSION_ID = 44;
     float p1,p2,p3,p4;
     private static final long INTERVAL = 1000 * 2;
-    private static final long FASTEST_INTERVAL = 1000 * 1;
+    private static final long FASTEST_INTERVAL = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +132,7 @@ public class  MainActivity extends AppCompatActivity {
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
 
-    private LocationCallback mLocationCallback = new LocationCallback() {
+    private final LocationCallback mLocationCallback = new LocationCallback() {
 
         @Override
         public void onLocationResult(LocationResult locationResult) {
