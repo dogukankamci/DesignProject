@@ -47,9 +47,6 @@ public class  MainActivity extends AppCompatActivity {
     TextView tw;
     Button bt,bt1,bt2;
     FusedLocationProviderClient mFusedLocationClient;
-    //Comment line.
-    //Comment line 2.
-    //Second comment line
     int PERMISSION_ID = 44;
     float p1,p2,p3,p4;
     private static final long INTERVAL = 1000 * 2;
@@ -125,7 +122,7 @@ public class  MainActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                Toast.makeText(this, "GPS Ayarını Açın! Eğer sorun yine düzelmezse uygulama ayarlarından GPS iznini aktif edin!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "GPS Ayarını Açın! Eğer sorun yine düzelmezde uygulama ayarlarından GPS iznini aktif edin!", Toast.LENGTH_LONG).show();
 
             }
         } else {
