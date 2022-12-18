@@ -1,5 +1,7 @@
 package com.dogukan.hizolcer;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,6 +10,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -29,8 +32,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.TopicManagementResponse;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -51,20 +58,21 @@ public class  MainActivity extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
-        Map<String,Object> users = new HashMap<>();
-        users.put("firstName","Driver");
-        users.put("lastName","1");
-        users.put("description","SpeedTrack");
+        Map<String, Object> users = new HashMap<>();
+        users.put("firstName", "Driver");
+        users.put("lastName", "1");
+        users.put("description", "SpeedTrack");
+
 
         firestore.collection("users").add(users).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(getApplicationContext(),"Success", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),"Failure", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Failure", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -72,7 +80,10 @@ public class  MainActivity extends AppCompatActivity {
         bt = (Button) findViewById(R.id.bt);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
+
     }
+
+
 
 
     public void Click(View v){
@@ -188,4 +199,5 @@ public class  MainActivity extends AppCompatActivity {
             getLastLocation();
         }
     }
+
 }
