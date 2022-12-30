@@ -8,7 +8,9 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import android.widget.TextView;
@@ -24,14 +26,14 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class  MainActivity extends AppCompatActivity {
@@ -48,25 +50,10 @@ public class  MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow(). addFlags (WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        firestore = FirebaseFirestore.getInstance();
-
-        Map<String,Object> users = new HashMap<>();
-        users.put("firstName","Driver");
-        users.put("lastName","1");
-        users.put("description","SpeedTrack");
-
-        firestore.collection("users").add(users).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(getApplicationContext(),"Success", Toast.LENGTH_LONG).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),"Failure", Toast.LENGTH_LONG).show();
-            }
-        });
+        Toast.makeText(this, "Cloud sistemine başarıyla bağlanıldı. Hız bilginiz" +
+                " anlık olarak raporlanıyor.", Toast.LENGTH_LONG).show();
 
         tw = (TextView) findViewById(R.id.editText);
         bt = (Button) findViewById(R.id.bt);
@@ -97,12 +84,35 @@ public class  MainActivity extends AppCompatActivity {
                             double dSpeed = location.getSpeed();
                             double a = 3.6 * (dSpeed);
                             int kmhSpeed = (int) (Math.round(a));
-                            double mphSpeed = kmhSpeed*1.6;
-                            System.out.format("%.2f", mphSpeed);
 
-                            tw.setText("Enlem:" + location.getLatitude() + "  Boylam:"
-                                    + location.getLongitude()+ "\n\n\t\t\t\t\t\tAnlık Hız= "+kmhSpeed + " km/h"
-                                    +"\n\n\t\t\t\t\t\tAnlık Hız= "+mphSpeed + " mph");
+                            tw.setText("\n\nEnlem:" + location.getLatitude() + "  Boylam:"
+                                    + location.getLongitude()+ "\n\n\t\t\t\t\t\tAnlık Hız= "+kmhSpeed + " km/h");
+
+
+                            FirebaseDatabase database = FirebaseDatabase.getInstance("https://designproject-adec5-default-rtdb.firebaseio.com");
+                            DatabaseReference myRef = database.getReference("Anlık Hız");
+
+                            myRef.setValue(kmhSpeed);
+
+
+
+                            myRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    int value = dataSnapshot.getValue(int.class);
+                                    Log.i("Hız","Hedef kişinin anlık hızı: " +value);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError error) {
+                                    Log.i("Hız", "Bulut sisteminden hız verisi okunamadı." +
+                                            "Bir sorun oluştu.", error.toException());
+                                }
+                            });
+
+
+
+
                             if(kmhSpeed>80 && kmhSpeed<100){
                                 Toast.makeText(getApplicationContext() , "80 km/h hızdan yükseğe çıktınız. Dikkatli olunuz!", Toast.LENGTH_SHORT);
                             }
@@ -122,6 +132,7 @@ public class  MainActivity extends AppCompatActivity {
         }
     }
 
+
     @SuppressLint("MissingPermission")
     private void requestNewLocationData() {
         LocationRequest mLocationRequest = new LocationRequest();
@@ -134,6 +145,7 @@ public class  MainActivity extends AppCompatActivity {
 
     private final LocationCallback mLocationCallback = new LocationCallback() {
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
@@ -142,11 +154,8 @@ public class  MainActivity extends AppCompatActivity {
             double dSpeed = mLastLocation.getSpeed();
             double a = 3.6 * (dSpeed);
             int kmhSpeed = (int) (Math.round(a));
-            double mphSpeed = kmhSpeed*1.6;
-            System.out.format("%.2f", mphSpeed);
             tw.setText("Enlem:" + mLastLocation.getLatitude() + " Boylam:"
-                    + mLastLocation.getLongitude()+"\n\n\t\t\t\t\t\tAnlık Hız= "+kmhSpeed + " km/h" +
-                                                 "\n\n\t\t\t\t\t\tAnlık Hız= "+mphSpeed + " mph");
+                    + mLastLocation.getLongitude()+"\n\n\t\t\t\t\t\tAnlık Hız= "+kmhSpeed + " km/h");
             getLastLocation();
         }
     };
