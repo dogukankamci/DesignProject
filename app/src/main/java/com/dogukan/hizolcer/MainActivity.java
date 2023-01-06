@@ -61,7 +61,6 @@ public class  MainActivity extends AppCompatActivity {
         getLastLocation();
     }
 
-
     public void Click(View v){
            moveTaskToBack(true);
            android.os.Process.killProcess(android.os.Process.myPid());
@@ -85,16 +84,18 @@ public class  MainActivity extends AppCompatActivity {
                             double a = 3.6 * (dSpeed);
                             int kmhSpeed = (int) (Math.round(a));
 
-                            tw.setText("\n\nEnlem:" + location.getLatitude() + "  Boylam:"
-                                    + location.getLongitude()+ "\n\n\t\t\t\t\t\tAnlık Hız= "+kmhSpeed + " km/h");
-
+                            tw.setText("Enlem:" + location.getLatitude() + "  Boylam:"
+                                    + location.getLongitude()+ "\n\nAnlık Hız= "+kmhSpeed + " km/h");
+                            if(kmhSpeed>80 && kmhSpeed<100){
+                                Toast.makeText(getApplicationContext() , "80 km/h hızdan yükseğe çıktınız. Dikkatli olunuz!", Toast.LENGTH_SHORT);
+                            }
+                            if(kmhSpeed>100){
+                                Toast.makeText(getApplicationContext() , "100 km/h hızdan yükseğe çıktınız. Dikkatli olunuz!", Toast.LENGTH_SHORT);
+                            }
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance("https://designproject-adec5-default-rtdb.firebaseio.com");
                             DatabaseReference myRef = database.getReference("Anlık Hız");
-
                             myRef.setValue(kmhSpeed);
-
-
 
                             myRef.addValueEventListener(new ValueEventListener() {
                                 @Override
@@ -102,36 +103,23 @@ public class  MainActivity extends AppCompatActivity {
                                     int value = dataSnapshot.getValue(int.class);
                                     Log.i("Hız","Hedef kişinin anlık hızı: " +value);
                                 }
-
                                 @Override
                                 public void onCancelled(DatabaseError error) {
                                     Log.i("Hız", "Bulut sisteminden hız verisi okunamadı." +
                                             "Bir sorun oluştu.", error.toException());
                                 }
                             });
-
-
-
-
-                            if(kmhSpeed>80 && kmhSpeed<100){
-                                Toast.makeText(getApplicationContext() , "80 km/h hızdan yükseğe çıktınız. Dikkatli olunuz!", Toast.LENGTH_SHORT);
-                            }
-                            if(kmhSpeed>100){
-                                Toast.makeText(getApplicationContext() , "100 km/h hızdan yükseğe çıktınız. Dikkatli olunuz!", Toast.LENGTH_SHORT);
-                            }
                             requestNewLocationData();
                         }
                     }
                 });
             } else {
                 Toast.makeText(this, "GPS Ayarını Açın! Eğer sorun yine düzelmezde uygulama ayarlarından GPS iznini aktif edin!", Toast.LENGTH_LONG).show();
-
             }
         } else {
             requestPermissions();
         }
     }
-
 
     @SuppressLint("MissingPermission")
     private void requestNewLocationData() {
@@ -155,7 +143,7 @@ public class  MainActivity extends AppCompatActivity {
             double a = 3.6 * (dSpeed);
             int kmhSpeed = (int) (Math.round(a));
             tw.setText("Enlem:" + mLastLocation.getLatitude() + " Boylam:"
-                    + mLastLocation.getLongitude()+"\n\n\t\t\t\t\t\tAnlık Hız= "+kmhSpeed + " km/h");
+                    + mLastLocation.getLongitude()+"\n\nAnlık Hız= "+kmhSpeed + " km/h");
             getLastLocation();
         }
     };
