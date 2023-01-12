@@ -46,6 +46,7 @@ public class TrackSpeed extends AppCompatActivity {
                 }
                 else if (value>=130)
                 {
+                    twspeed.setTextColor(Color.rgb(151,39,56));
                     Toast.makeText(TrackSpeed.this, "Aşırı Hız Uyarısı!", Toast.LENGTH_SHORT).show();
                     MediaPlayer mp = MediaPlayer.create(TrackSpeed.this,R.raw.warning);
                     mp.start();
