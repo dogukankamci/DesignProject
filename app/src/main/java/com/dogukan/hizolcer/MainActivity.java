@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -37,7 +39,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class  MainActivity extends AppCompatActivity {
-    FirebaseFirestore firestore;
     TextView tw;
     Button bt;
     FusedLocationProviderClient mFusedLocationClient;
@@ -86,12 +87,6 @@ public class  MainActivity extends AppCompatActivity {
 
                             tw.setText("Enlem:" + location.getLatitude() + "  Boylam:"
                                     + location.getLongitude()+ "\n\nAnlık Hız= "+kmhSpeed + " km/h");
-                            if(kmhSpeed>80 && kmhSpeed<100){
-                                Toast.makeText(getApplicationContext() , "80 km/h hızdan yükseğe çıktınız. Dikkatli olunuz!", Toast.LENGTH_SHORT);
-                            }
-                            if(kmhSpeed>100){
-                                Toast.makeText(getApplicationContext() , "100 km/h hızdan yükseğe çıktınız. Dikkatli olunuz!", Toast.LENGTH_SHORT);
-                            }
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance("https://designproject-adec5-default-rtdb.firebaseio.com");
                             DatabaseReference myRef = database.getReference("Anlık Hız");
@@ -145,6 +140,22 @@ public class  MainActivity extends AppCompatActivity {
             tw.setText("Enlem:" + mLastLocation.getLatitude() + " Boylam:"
                     + mLastLocation.getLongitude()+"\n\nAnlık Hız= "+kmhSpeed + " km/h");
             getLastLocation();
+            
+            if (kmhSpeed>80 && kmhSpeed<130)
+            {
+                tw.setTextColor(Color.rgb(238, 210, 2));
+            }
+            else if (kmhSpeed<80)
+            {
+                tw.setTextColor(Color.rgb(255,255,255));
+            }
+            else if (kmhSpeed>=130)
+            {
+                tw.setTextColor(Color.rgb(151,39,56));
+                Toast.makeText(MainActivity.this, "Aşırı Hız Uyarısı!", Toast.LENGTH_SHORT).show();
+                MediaPlayer mp = MediaPlayer.create(MainActivity.this,R.raw.warning);
+                mp.start();
+            }
         }
     };
 

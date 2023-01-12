@@ -2,10 +2,13 @@ package com.dogukan.hizolcer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +35,21 @@ public class TrackSpeed extends AppCompatActivity {
                 int value = dataSnapshot.getValue(int.class);
                 Log.i("Hız","Hedef kişinin anlık hızı: " +value);
                 twspeed.setText("Anlık Hız = " +value + " km/h");
+                if(value>80 && value<130)
+                {
+                    twspeed.setTextColor(Color.rgb(238, 210, 2));
+
+                }
+                else if (value<80)
+                {
+                    twspeed.setTextColor(Color.rgb(255, 255, 255));
+                }
+                else if (value>=130)
+                {
+                    Toast.makeText(TrackSpeed.this, "Aşırı Hız Uyarısı!", Toast.LENGTH_SHORT).show();
+                    MediaPlayer mp = MediaPlayer.create(TrackSpeed.this,R.raw.warning);
+                    mp.start();
+                }
             }
             @Override
             public void onCancelled(DatabaseError error) {
